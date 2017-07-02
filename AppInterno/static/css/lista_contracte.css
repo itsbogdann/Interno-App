@@ -1,0 +1,57 @@
+.vezi_contract{
+	cursor:pointer;
+}
+
+.tabel_mare{
+	width:100%;
+    max-height:100%;
+	padding-left:2%;
+	padding-right:2%;
+
+}
+
+table.dataTable thead th {
+    position: relative;
+    background-image: none !important;
+}
+
+table.dataTable thead th.sorting:after,
+table.dataTable thead th.sorting_asc:after,
+table.dataTable thead th.sorting_desc:after {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: block;
+    font-family: FontAwesome;
+}
+table.dataTable thead th.sorting:after {
+    content: "\f0dc";
+    color: #ddd;
+    font-size: 0.8em;
+    padding-top: 0.12em;
+}
+table.dataTable thead th.sorting_asc:after {
+    content: "\f0de";
+}
+table.dataTable thead th.sorting_desc:after {
+    content: "\f0dd";
+}
+
+div.dataTables_scrollBody table.dataTable thead th.sorting:after,
+div.dataTables_scrollBody table.dataTable thead th.sorting_asc:after,
+div.dataTables_scrollBody table.dataTable thead th.sorting_desc:after {
+	content: "";
+}
+
+#tabel_camp_obligatii{
+    max-width:25rem;
+    max-height:2rem;
+    overflow-y:hidden;
+    overflow-x:hidden;
+}
+
+tfoot input {
+        width: 65%;
+        padding: 3px;
+        box-sizing: border-box;
+    }

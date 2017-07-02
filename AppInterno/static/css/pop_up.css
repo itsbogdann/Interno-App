@@ -1,0 +1,172 @@
+#contract_pdf{
+     width:50%;
+     height:100%;
+    float:left;
+}
+
+#container_contract,#container_nerec,#container_doc{
+    width:50%;
+    height:100%;
+    float:left;
+    text-align:center;
+}
+
+#contract_imagine{
+    height:100%;
+    width:100%;
+    object-fit:contain;
+}
+
+.modal-body {
+    height: 76rem;
+    overflow-y:auto;
+    overflow-x:hidden;
+}
+
+.modal-dialog{
+   width:95%;
+}
+
+.campuri{
+    float:left;
+    margin-left:2.5%;
+    width:36%;
+}
+
+.detalii{
+    border:none;
+}
+
+#semnat{
+    display:inline;
+    padding-right:5.5%;
+    padding-left:13%;
+}
+
+#tip_copie{
+    display:inline;
+    padding-right:5.5%;
+    padding-left:13%;
+}
+
+#mod_trimitere{
+    color:deepskyblue;
+    display:inline;
+    padding-right:5.5%;
+    padding-left:13%;
+}
+
+.form-control[readonly]{
+  background-color:transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.control-label{
+    padding-bottom:1%;
+}
+
+.col-sm-8{
+    width:28%;
+}
+.col-sm-9{
+    width:22%;
+}
+
+#rap_act {
+   background-color:#f2e1ff;
+}
+
+#rap_inter {
+   background-color:#f4e6dc;
+}
+
+#date_boolene{
+    padding-top:0.5rem;
+}
+
+.panel-body{
+    max-height:42rem;
+    max-width:100%;
+    overflow-y:auto;
+    overflow-x:auto;
+}
+
+#container_contract:after {
+			content:'';
+			display:block;
+			width:33px;
+			height:33px;
+			position:absolute;
+			top:0;
+			right:0;
+			background:url('../../static/zoom lib/icon.png');
+		}
+
+#container_contract img {
+	display: block;
+}
+
+#container_contract img::selection { background-color: transparent; }
+#container_contract img:hover { cursor: url('../../static/zoom lib/grab.cur'), default; }
+#container_contract img:active { cursor: url('../../static/zoom lib/grabbed.cur'), default; }
+
+.convertlink{
+    margin-top:2%;
+}
+
+#semnat_ok,#tip_copie_ok,.oki{
+    color:green;
+}
+
+#semnat_notok,#tip_copie_notok,.notoki{
+    color:red;
+}
+
+
+.btn-file {
+    position: relative;
+     overflow: hidden;
+ }
+ .btn-file input[type=file] {
+     position: absolute;
+     top: 0;
+     right: 0;
+     min-width: 100%;
+     min-height: 100%;
+     font-size: 100px;
+     text-align: right;
+     filter: alpha(opacity=0);
+     opacity: 0;
+     outline: none;
+     background: white;
+     cursor: inherit;
+     display: block;
+ }
+
+.latimediv {
+    width:11%;
+    height:6em;
+}
+
+#formistoric{
+    display:inline-block;
+    width:96%;
+    margin-left:2%;
+    margin-right:2%;
+}
+
+#formistoric div label{
+    width:10%;
+    margin-left:33%;
+}
+
+.orice{
+    float:left;
+    font-size: 1.5em;
+}
+
+.flatat{
+    float:left;
+
+}

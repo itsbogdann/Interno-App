@@ -1,0 +1,26 @@
+{% extends 'AppInterno/base.html' %}
+{% block content %}
+{% load static %}
+<script>$("#bara_navigare").hide();</script>
+
+    <div id="div_logo_login">
+    <a  href="{% url 'index' %}"><img src="{% static 'img/logo_black_t.png' %}" id="logo_login"></a>
+    </div>
+
+
+
+<div class="polaroid">
+  <div class="container">
+    	<form method="POST" style="width: 450px; text-align:center; margin: 0 auto;">
+			{% csrf_token %}
+			{{form.as_p}}
+			{{ error_message }}
+			<button class="btn btn-success"  id = "butonul_login" type="submit"><span id="text_buton_login2">LOG IN</span></button>
+		</form>
+  </div>
+</div>
+
+
+
+
+{% endblock %}

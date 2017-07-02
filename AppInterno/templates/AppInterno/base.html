@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html land="en">
+
+{% load admin_urls %}
+<head>
+	<title>Interno</title>
+	{% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+	<link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon_2.ico' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.13/af-2.1.3/cr-1.3.2/kt-2.2.0/r-2.1.1/rg-1.0.0/rr-1.2.0/sc-1.4.2/se-1.2.0/datatables.min.css"/>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.13/af-2.1.3/cr-1.3.2/kt-2.2.0/r-2.1.1/rg-1.0.0/rr-1.2.0/sc-1.4.2/se-1.2.0/datatables.min.js"></script>
+    <script type="text/javascript" src="https://use.fontawesome.com/def88a080f.js"></script>
+    <script type="text/javascript" src="http://momentjs.com/downloads/moment-with-locales.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.13/sorting/datetime-moment.js"></script>
+    <script type="text/javascript" src="{% static 'js/pop_up.js' %}"></script>
+    <script type="text/javascript" src="{% static 'zoom lib/jquery.zoom.min.js' %}"></script>
+</head>
+
+<body>
+<nav class="navbar navbar-inverse" id="bara_navigare">
+  <div class="container-fluid">
+    <div class="navbar-header">
+         <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static 'img/logo_white_t.png' %}" id="logo"></a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="myNavbar">
+
+    <!-- daca mai vrem pagini langa logo
+       <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Page 1-1</a></li>
+            <li><a href="#">Page 1-2</a></li>
+            <li><a href="#">Page 1-3</a></li>
+          </ul>
+        </li>
+        <li><a href="#">Page 2</a></li>
+        <li><a href="#">Page 3</a></li>
+      </ul> -->
+
+      <ul class="nav navbar-nav navbar-right">
+        {% if user.username %}
+           <li><a href="/admin"><span class="glyphicon glyphicon-user"></span> {{ user.username }}</a></li>
+          {% if request.session.adm == 1 %}
+            <li ><a class="adauga" data-toggle="modal" data-target="#adaugapopup"><span class="glyphicon glyphicon-plus"></span> Adauga</a></li>
+          {% endif %}
+          <li><a href="/istoric"><span class="glyphicon glyphicon-hourglass"></span> Istoric </a></li>
+          <li><a href="/statistici"><span class="glyphicon glyphicon-stats"></span> Statistici </a></li>
+          <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-in"></span>Delogare</a></li>
+
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+ <div class="modal fade" id="adaugapopup" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Adaugare</h4>
+        </div>
+        <div class="modal-body">
+            <div class="alegeri">
+                 <a href="/admin/auth/user/add/">User</a><br>
+                 <a href="/admin/AppInterno/contract/add/">Contract</a><br>
+                 <a href="/admin/AppInterno/contractcustom/add/">Contract Custom</a><br>
+              </div>
+        </div>
+         <div class="modal-footer">
+             <button type="button" class="btn btn-default" data-dismiss="modal">Inchide</button>
+         </div>
+
+      </div>
+    </div>
+ </div>
+
+{% block content %}
+{% endblock %}
+
+</body>
+</html>

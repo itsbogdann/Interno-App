@@ -1,0 +1,451 @@
+{% extends 'AppInterno/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block content %}
+ <link rel="stylesheet" type="text/css" href="{% static 'css/pop_up.css' %}" />
+ <link rel="stylesheet" type="text/css" href="{% static 'css/lista_contracte.css' %}">
+ <script type="text/javascript" src="{% static 'js/tabel.js' %}"></script>
+
+{% if user.username %}
+ {% for contract in lista %}
+
+  <div class="modal fade" id="{{ contract.id }}" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Contract #<input class="detalii" type="text" id="id_contract" value="{{contract.id}}" readonly></h4>
+        </div>
+
+        <div class="modal-body">
+            {% if contract.extensie == 'pdf'%}
+           <iframe class="to_hide" id="contract_pdf" src="../../static/pdf_js_lib/web/viewer.html?file=pdf-uri/{{ contract.numefis }}.{{ contract.extensie }}">Nu putem afisa contractul acesta. Ne pare rau.</iframe>
+                {% elif contract.extensie == 'jpg' or contract.extensie == 'gif' or contract.extensie == 'png' or contract.extensie == 'apng' or contract.extensie == 'svg' or contract.extensie == 'bmp' or contract.extensie == 'bmp' or contract.extensie == 'ico' or contract.extensie == 'jpeg'%}
+                <div class="to_hide" id="container_contract"><img id="contract_imagine" src="../../static/pdf_js_lib/web/pdf-uri/{{ contract.numefis }}.{{ contract.extensie }}" /></div>
+                <script>
+                $(document).ready(function(){
+                        $('#container_contract').zoom({ on:'grab' });
+                    });
+                </script>
+            {% elif contract.extensie == 'docx' %}
+                <div class="to_hide" id="container_nerec">
+                <h3 class="jumbotron">Fisier de tip .docx detectat.</h3>
+                <form method="get" action="../../static/pdf_js_lib/web/pdf-uri/{{ contract.numefis }}.{{ contract.extensie }}">
+                <button type="submit" class="btn btn-primary">Downloadeaza!</button>
+                <h5 class="jumbotron convertlink">Pentru afisare, se pot converti in pdf <a href="https://online2pdf.com/convert-docx-to-pdf">aici</a>. </h5>
+                </form>
+                </div>
+                {% elif contract.extensie == 'odt' %}
+                <div class="to_hide" id="container_nerec">
+                <h3 class="jumbotron">Fisier de tip .odt detectat.</h3>
+                <form method="get" action="../../static/pdf_js_lib/web/pdf-uri/{{ contract.numefis }}.{{ contract.extensie }}">
+                <button type="submit" class="btn btn-primary">Downloadeaza!</button>
+                <h5 class="jumbotron convertlink">Pentru afisare, se pot converti in pdf <a href="https://online2pdf.com/convert-odt-to-pdf">aici</a>. </h5>
+                </form>
+                </div>
+                {% else %}
+                <div class="to_hide" id="container_nerec">
+                <h3 class="jumbotron">Fisier de tip nerecunoscut.</h3>
+                <form method="get" action="../../static/pdf_js_lib/web/pdf-uri/{{ contract.numefis }}.{{ contract.extensie }}">
+                <button type="submit" class="btn btn-primary">Downloadeaza!</button>
+                </form>
+                </div>
+            {% endif %}
+
+
+             <form class="form-horizontal formular_edit" id="{{ contract.id }}formpebune" hidden>
+               <div class="panel panel-default">
+                      <div class="panel-heading"><b>Obligatii</b></div>
+                      <input class="form-control" id="{{ contract.id }}obligatii2" value="{{ contract.obligatii }}"/>
+               </div>
+               <div class="form-group">
+                      <label for="data_incepere" class="col-sm-8 control-label bg-success">Data Incepere</label>
+                      <div class="col-sm-9"><input class="form-control " type="text" id="{{ contract.id }}data_incepere2"  value="{{contract.dataIncepere}}"></div>
+                      <label for="data_expirare" class="col-sm-8 control-label bg-danger">Data Expirare</label>
+                      <div class="col-sm-9"><input class="form-control" type="text" id="{{ contract.id }}data_expirare2"  value="{{contract.dataExpirare}}"></div>
+               </div>
+               <div class="form-group">
+                      <label for="data_plata" class="col-sm-8 control-label bg-warning">Data Platii</label>
+                      <div class="col-sm-9"><input class="form-control " type="text" id="{{ contract.id }}data_plata2"  value="{{contract.dataPlata}}"></div>
+                      <label for="data_emitere_factura" class="col-sm-8 control-label bg-info">Data Emitere Factura</label>
+                      <div class="col-sm-9"><input class="form-control" type="text" id="{{ contract.id }}data_emitere_factura2"  value="{{contract.dataEmitereFactura}}"></div>
+               </div>
+               <div class="form-group">
+                      <label for="data_rap_act" class="col-sm-8 control-label" id="rap_act">Data Rap Act</label>
+                      <div class="col-sm-9"><input class="form-control" type="text" id="{{ contract.id }}data_rap_act2"  value="{{contract.dataRapAct}}"></div>
+                      <label for="data_rap_inter" class="col-sm-8 control-label" id="rap_inter">Data Rap Inter</label>
+                      <div class="col-sm-9"><input class="form-control" type="text" id="{{ contract.id }}data_rap_inter2"  value="{{contract.dataRapInter}}"></div>
+               </div>
+              <div id="date_boolene">
+                <div id="semnat">
+                  <label>Semnat</label>
+                    {%  if contract.semnat == True %}
+                    <input id="{{ contract.id }}semnat1" type="checkbox" checked/>
+                    {% else %}
+                    <input id="{{ contract.id }}semnat2" type="checkbox"/>
+                    {% endif %}
+               </div>
+                <div id="tip_copie">
+                    <label>Tip Copie</label>
+                    {%  if contract.tipCopie == True %}
+                    <input id="{{ contract.id }}tipcopie1" type="checkbox" checked/>
+                    {% else %}
+                    <input id="{{ contract.id }}tipcopie2" type="checkbox"/>
+                    {% endif %}
+               </div>
+              <div id="mod_trimitere">
+                    <label style="color:black;">Mod Trimitere</label>
+                    <label id="trimitere_text" >{%  if contract.modTrimitere == True %}
+                    <input id="{{ contract.id }}modtrimitere1" type="checkbox" checked/>
+                    {% else %}
+                    <input id="{{ contract.id }}modtrimitere2" type="checkbox"/>
+                    {% endif %}</label>
+               </div>
+              </div>
+
+             <div class="form-group" style="margin-left:45%;margin-top:5%;">
+             <input type="file" class="btn btn-primary btn-file" id="{{ contract.id }}inputfile">
+             <input type="text" id="{{ contract.id }}numefis2" value="{{ contract.numefis }}" hidden>
+             <input type="text" id="{{ contract.id }}extensie2" value="{{ contract.extensie }}" hidden>
+              </div>
+
+             <button type="submit" id="{{ contract.id }}butonreal" hidden></button>
+              {% csrf_token %}
+
+           </form>
+
+             <form class="form-horizontal campuri" method='POST'>
+             <input type="text" id="{{ contract.id }}camp_id" value="{{ contract.id }}" hidden>
+             <input type="text" id="{{ contract.id }}camp_semnat" value="{{ contract.semnat }}" hidden>
+             <input type="text" id="{{ contract.id }}camp_mod_trimitere" value="{{ contract.modTrimitere }}" hidden>
+             <input type="text" id="{{ contract.id }}camp_tip_copie" value="{{ contract.tipCopie }}" hidden>
+             <input type="text" id="{{ contract.id }}camp_obligatii" value="{{ contract.obligatii }}" hidden>
+             <input type="text" id="{{ contract.id }}camp_furnizor" value="{{ contract.idFurnizor.id }}" hidden>
+             <input type="text" id="{{ contract.id }}numefis" value="{{ contract.numefis }}" hidden>
+             <input type="text" id="{{ contract.id }}extensie" value="{{ contract.extensie }}" hidden>
+
+               <div class="form-group">
+                      <label for="nume_furnizor" class="col-sm-2 control-label bg-primary">Furnizor</label>
+                      <div class="col-sm-10"><input class="form-control" type="text" id="{{ contract.id }}nume_furnizor" value="{{contract.idFurnizor.nume}}" readonly></div>
+               </div>
+               <div class="panel panel-default">
+                      <div class="panel-heading"><b>Obligatii</b></div>
+                      <div class="panel-body" id="obligatii">{{contract.obligatii}}</div>
+               </div>
+               <div class="form-group">
+                      <label for="data_incepere" class="col-sm-8 control-label bg-success">Data Incepere</label>
+                      <div class="col-sm-9"><input class="form-control" type="text" id="{{ contract.id }}data_incepere" readonly value="{{contract.dataIncepere}}"></div>
+                      <label for="data_expirare" class="col-sm-8 control-label bg-danger">Data Expirare</label>
+                      <div class="col-sm-9"><input class="form-control" type="text" id="{{ contract.id }}data_expirare" readonly value="{{contract.dataExpirare}}"></div>
+               </div>
+               <div class="form-group">
+                      <label for="data_plata" class="col-sm-8 control-label bg-warning">Data Platii</label>
+                      <div class="col-sm-9"><input class="form-control" type="text" id="{{ contract.id }}data_plata" readonly value="{{contract.dataPlata}}"></div>
+                      <label for="data_emitere_factura" class="col-sm-8 control-label bg-info">Data Emitere Factura</label>
+                      <div class="col-sm-9"><input class="form-control" type="text" id="{{ contract.id }}data_emitere_factura" readonly value="{{contract.dataEmitereFactura}}"></div>
+               </div>
+               <div class="form-group">
+                      <label for="data_rap_act" class="col-sm-8 control-label" id="rap_act">Data Rap Act</label>
+                      <div class="col-sm-9"><input class="form-control" type="text" id="{{ contract.id }}data_rap_act" readonly value="{{contract.dataRapAct}}"></div>
+                      <label for="data_rap_inter" class="col-sm-8 control-label" id="rap_inter">Data Rap Inter</label>
+                      <div class="col-sm-9"><input class="form-control" type="text" id="{{ contract.id }}data_rap_inter" readonly value="{{contract.dataRapInter}}"></div>
+               </div>
+              <div id="date_boolene">
+                <div id="semnat">
+                    {% if contract.semnat == True %}
+                    <span class="glyphicon glyphicon-ok" id="semnat_ok"></span>
+                    <label class="oki">Semnat</label>
+                    {% else %}
+                    <span class="glyphicon glyphicon-remove" id="semnat_notok"></span>
+                    <label class="notoki">Semnat</label>
+                    {% endif %}
+
+               </div>
+                <div id="tip_copie">
+                    {% if contract.tipCopie == True %}
+                    <span class="glyphicon glyphicon-ok" id="tip_copie_ok"></span>
+                    <label class="oki">Tip Copie</label>
+                    {% else %}
+                    <span class="glyphicon glyphicon-remove" id="tip_copie_notok"></span>
+                    <label class="notoki">Tip Copie</label>
+                    {% endif %}
+
+               </div>
+              <div id="mod_trimitere">
+                    <span class="glyphicon glyphicon-file"></span>
+                    <label id="trimitere_text" >{% if contract.modTrimitere == false %} Fizic {% else %} Fizic + Digital {% endif %}</label>
+               </div>
+              </div>
+
+
+             <!-- <input type='submit' value='Test button' id="buton_test"/> POSTUL VIETII CE DRACU -->
+              {% csrf_token %}
+
+           </form>
+        </div>
+
+         <div class="modal-footer">
+             <button type="button" onclick="vizualizare({{ contract.id }})" class="btn btn-info revine" style="display:none;float:left;">Vezi Contract</button>
+             <button type="button" onclick="$('#{{ contract.id }}butonreal').click();" class="btn btn-primary edit_for_real" style="display:none">Submit</button>
+             <button type="button" onclick="editare()" class="btn btn-info edit" style="float:left;">Edit</button>
+             <button type="button" class="btn btn-default" data-dismiss="modal">Inchide</button>
+         </div>
+
+      </div>
+    </div>
+ </div>
+    {% endfor %}
+
+    {% if lista %}
+
+        <div class="tabel_mare">
+      <table class="table table-hover table-striped" id="tabel_contracte">
+        <thead>
+        <tr>
+            <th>Furnizor</th>
+            <th>Data Incepere</th>
+            <th>Data Expirare</th>
+            <th>Obligatii</th>
+            <th>Data Plata</th>
+            <th></th>
+        </tr>
+        </thead>
+      <tbody>
+        {% for contract in lista %}
+
+            <tr class="vezi_contract view hm-red-strong" data-toggle="modal" data-target="#{{ contract.id }}">
+            <td> {{contract.idFurnizor.nume}}</td>
+            <td> {% language 'ro' %}{{contract.dataIncepere}}{% endlanguage %}</td>
+            <td>  {% language 'ro' %}{{contract.dataExpirare}}</td>
+            <td><div id="tabel_camp_obligatii">{{contract.obligatii}}{% endlanguage %}</div></td>
+            <td>  {% language 'ro' %}{{contract.dataPlata}}{% endlanguage %}</td>
+
+
+            <div id="myModal" class="modal fade" role="dialog">
+        <div class = "modal-dialog">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3 id="myModalLabel">Delete</h3>
+            </div>
+            <div class="modal-body">
+                <p></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal">Close</button>
+                <button data-dismiss="modal" class="btn red" id="btnYes">Confirm</button>
+            </div>
+        </div>
+    </div>
+            
+            
+
+            <td><button type="button" id="{{ contract.id }}butt" class="btn btn-danger">Sterge</button></td>
+<!--$(this).closest('tr').remove(); event.stopPropagation();-->
+            
+
+            </tr>
+        {% endfor %}
+
+      </tbody>
+      <tfoot>
+            <tr>
+                <th>furnizor</th>
+                <th>data incepere</th>
+                <th>data expirare</th>
+                <th>obligatii</th>
+                <th>data plata</th>
+                <td></td>
+            </tr>
+      </tfoot>
+    </table>
+       </div>
+
+
+    <script>
+        {% for contract in lista %}
+     $("#{{ contract.id }}").on("hidden.bs.modal", function () {
+     $('.campuri').show();
+     $('.to_hide').show();
+     $('.edit').show();
+     $('.formular_edit').hide();
+     $('.revine').hide();
+     $('.edit_for_real').hide();
+
+    $('#{{ contract.id }}obligatii2').val( $('#{{ contract.id }}camp_obligatii').val());
+    $('#{{ contract.id }}data_incepere2').val( $('#{{ contract.id }}data_incepere').val());
+    $('#{{ contract.id }}data_expirare2').val( $('#{{ contract.id }}data_expirare').val());
+    $('#{{ contract.id }}data_plata2').val( $('#{{ contract.id }}data_plata').val());
+    $('#{{ contract.id }}data_rap_inter2').val( $('#{{ contract.id }}data_rap_inter').val());
+    $('#{{ contract.id }}data_rap_act2').val( $('#{{ contract.id }}data_rap_act').val());
+    $('#{{ contract.id }}data_emitere_factura2').val( $('#{{ contract.id }}data_emitere_factura').val());
+
+    if( $('#{{ contract.id }}camp_tip_copie').val() === "True")
+         $('#{{ contract.id }}tipcopie1').prop('checked', true);
+    else
+         $('#{{ contract.id }}tipcopie2').prop('checked', false);
+
+    if( $('#{{ contract.id }}camp_mod_trimitere').val() === "True")
+         $('#{{ contract.id }}modtrimitere1').prop('checked', true);
+    else
+         $('#{{ contract.id }}modtrimitere2').prop('checked', false);
+
+    if( $('#{{ contract.id }}camp_semnat').val() === "True")
+         $('#{{ contract.id }}semnat1').prop('checked', true);
+    else
+         $('#{{ contract.id }}semnat2').prop('checked', false);
+     });
+
+       $('#{{ contract.id }}inputfile').val('');
+
+     $(document).ready(function() {
+ $("#{{ contract.id }}formpebune").on('submit',function(event) {
+     var semnat,modtrimitere,tipcopie;
+     {%  if contract.semnat == True %}
+     if(document.getElementById({{contract.id}}+'semnat1').checked )
+         semnat='True';
+     else
+         semnat='False';
+     {% else %}
+      if(document.getElementById({{contract.id}}+'semnat2').checked )
+         semnat='True';
+     else
+         semnat='False';
+     {% endif %}
+
+    {%  if contract.modTrimitere == True %}
+     if(document.getElementById({{contract.id}}+'modtrimitere1').checked )
+         modtrimitere='True';
+     else
+         modtrimitere='False';
+     {% else %}
+      if(document.getElementById({{contract.id}}+'modtrimitere2').checked)
+         semnat='True';
+     else
+         semnat='False';
+     {% endif %}
+        {%  if contract.tipCopie == True %}
+     if(document.getElementById({{contract.id}}+'tipcopie1').checked)
+         tipcopie='True';
+     else
+         tipcopie='False';
+     {% else %}
+      if(document.getElementById({{contract.id}}+'tipcopie2').checked)
+         semnat='True';
+     else
+         semnat='False';
+     {% endif %}
+
+    if(semnat !== 'True' && semnat !== 'False')
+        semnat= 'True';
+
+    if(tipcopie !== 'True' && tipcopie !== 'False')
+        tipcopie='True';
+
+    if(modtrimitere !== 'True' && modtrimitere !== 'False')
+        modtrimitere='True';
+
+
+     var nume=$('#{{ contract.id }}numefis').val();
+     var ext=$('#{{ contract.id }}extensie').val();
+      var el=$(this).find('#{{ contract.id }}inputfile').val();
+   console.log(el + " dudwat");
+     if(el !== '') {
+       var parts=el.split('.');
+       ext=parts[1];
+       var parts2=parts[0].split('\\');
+       nume=parts2[2];
+     }
+
+    $.ajax({
+        url : "/",
+        type : "POST",
+        data : {'id': $('#{{ contract.id }}camp_id').val(),
+                'furnizor':$('#{{ contract.id }}camp_furnizor').val(),
+                'numefis':$('#{{ contract.id }}numefis').val(),
+                'extensie':$('#{{ contract.id }}extensie').val(),
+                'numefis2':nume,
+                'extensie2':ext,
+                'nume_furnizor':$('#{{ contract.id }}nume_furnizor').val(),
+                'obligatii': $('#{{ contract.id }}camp_obligatii').val(),
+                'data_incepere':convert($('#{{ contract.id }}data_incepere').val()),
+                'data_expirare':convert($('#{{ contract.id }}data_expirare').val()),
+                'data_platii': convert($('#{{ contract.id }}data_plata').val()),
+                'data_rap_inter': convert($('#{{ contract.id }}data_rap_inter').val()),
+                'data_rap_act': convert($('#{{ contract.id }}data_rap_act').val()),
+                'data_emitere_factura': convert($('#{{ contract.id }}data_emitere_factura').val()),
+                'tip_copie':$('#{{ contract.id }}camp_tip_copie').val(),
+                'mod_trimitere':$('#{{ contract.id }}camp_mod_trimitere').val(),
+                'semnat':$('#{{ contract.id }}camp_semnat').val(),
+                'obligatii2': $('#{{ contract.id }}obligatii2').val(),
+                'data_incepere2': convert($('#{{ contract.id }}data_incepere2').val()),
+                'data_expirare2': convert($('#{{ contract.id }}data_expirare2').val()),
+                'data_platii2': convert($('#{{ contract.id }}data_plata2').val()),
+                'data_rap_inter2': convert($('#{{ contract.id }}data_rap_inter2').val()),
+                'data_rap_act2': convert($('#{{ contract.id }}data_rap_act2').val()),
+                'data_emitere_factura2':convert($('#{{ contract.id }}data_emitere_factura2').val()),
+                'tip_copie2':semnat,
+                'mod_trimitere2':modtrimitere,
+                'semnat2':tipcopie
+        },
+        success : function(json) {
+            console.log(json);
+           // $('#message').html("<h1>" +json.id + json.obligatii + "</h1>");
+        },
+
+        error : function(xhr,errmsg,err) {
+            $('#message').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                " <a href='#' class='close'>&times;</a></div>");
+            console.log(xhr.status + ": " + xhr.responseText);
+        }
+    });
+    return false;
+   });});
+     $("p").click(function(){
+    alert("The paragraph was clicked.");
+});
+
+
+
+    $("#{{ contract.id }}butt").click(function(event){
+        $(this).closest('tr').remove();
+        event.stopPropagation();
+         $.ajax({
+        url : "/",
+        type : "POST",
+        data : { 'id':{{ contract.id }},
+                 'sterg': 'da'
+        },
+        success : function(json) {
+            console.log(json);
+           // $('#message').html("<h1>" +json.id + json.obligatii + "</h1>");
+        },
+
+        error : function(xhr,errmsg,err) {
+            $('#message').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                " <a href='#' class='close'>&times;</a></div>");
+            console.log(xhr.status + ": " + xhr.responseText);
+        }
+    });
+
+    });
+
+        {% endfor %}
+     </script>
+
+ {% else %}
+     <h2 class="text_centrat">Nu exista contracte.</h2>
+ {% endif %}
+{% else %}
+
+ <script>$("#bara_navigare").hide();</script>
+    <div id="div_logo_login">
+    <a  href="{% url 'index' %}"><img src="{% static 'img/logo_black_t.png' %}" id="logo_login"></a>
+    </div>
+  <h2 class="text_centrat"> Se pare ca nu esti logat!</h2>
+  <form method="get" action="/login.html" class="text_centrat">
+      <button type="submit" class="btn btn-success" id="buton_logare_initial"><span id="text_buton_login">LOG IN</span></button>
+  </form>
+
+{% endif %}
+{% endblock %}

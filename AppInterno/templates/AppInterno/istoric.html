@@ -1,0 +1,190 @@
+{% extends 'AppInterno/base.html' %}
+{% load static %}
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/pop_up.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/lista_contracte.css' %}">
+    <script type="text/javascript" src="{% static 'js/tabel_modificari.js' %}"></script>
+
+
+    {% for modificare in listaModificari %}
+    <div class="modal fade" id="{{ modificare.id }}" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Contract #<input class="detalii" type="text" id="id_contract" value="{{modificare.idContract_id}}" readonly></h4>
+        </div>
+
+        <div class="modal-body">
+          <form class="form-horizontal" id="formistoric" method='post'>
+
+            {% if modificare.obligatiiBefore != modificare.obligatiiAfter %}
+               <div class="panel panel-default">
+                      <div class="panel-heading"><b>Obligatii</b></div>
+                      <div class="panel-body" id="obligatii">
+                      <input class="form-control" type="text"  readonly value="{{modificare.obligatiiBefore}}"></div>
+                      <span class="glyphicon glyphicon-circle-arrow-down" style="font-size:1.5em;margin-left:2%;" ></span>
+                    <div class="panel-body" id="obligatii"><input class="form-control" type="text" readonly value="{{modificare.obligatiiAfter}}"></div>
+               </div>
+          {% endif %}
+
+               <div class="form-group">
+                   {% if modificare.dataIncepereBefore != modificare.dataIncepereAfter %}
+                    <label for="data_incepere" class="col-sm-8 control-label bg-success">Data Incepere</label>
+                     <div class="col-sm-9 latimediv" ><input class="form-control" type="text" id="data_incepere" readonly value="{{modificare.dataIncepereBefore}}"></div>
+                     <span class="glyphicon glyphicon-circle-arrow-right orice"></span>
+                     <div class="col-sm-9 latimediv"><input class="form-control" type="text" id="data_incepere" readonly value="{{modificare.dataIncepereAfter}}"></div>
+                   {% endif %}
+
+                   {% if modificare.dataExpirareBefore != modificare.dataExpirareAfter %}
+                    <label for="data_expirare" class="col-sm-8 control-label bg-danger" style="clear:left;">Data Expirare</label>
+                      <div class="col-sm-9 latimediv"><input class="form-control" type="text" id="data_expirare" readonly value="{{modificare.dataExpirareBefore}}"></div>
+                     <span class="glyphicon glyphicon-circle-arrow-right orice"></span>
+                      <div class="col-sm-9 latimediv"><input class="form-control" type="text" id="data_expirare" readonly value="{{modificare.dataExpirareAfter}}"></div>
+                    {% endif %}
+               </div>
+
+               <div class="form-group">
+                   {% if modificare.dataPlataBefore != modificare.dataPlataAfter %}
+                    <label for="data_plata" class="col-sm-8 control-label bg-warning" style="clear:left;">Data Platii</label>
+                      <div class="col-sm-9 latimediv"><input class="form-control" type="text" id="data_plata" readonly value="{{modificare.dataPlataBefore}}"></div>
+                     <span class="glyphicon glyphicon-circle-arrow-right orice"></span>
+                      <div class="col-sm-9 latimediv"><input class="form-control" type="text" id="data_plata" readonly value="{{modificare.dataPlataAfter}}"></div>
+                     {% endif %}
+
+                   {% if modificare.dataEmitereFacturaBefore != modificare.dataEmitereFacturaAfter %}
+                     <label for="data_emitere_factura" class="col-sm-8 control-label bg-info" style="clear:left;">Data Emitere Factura</label>
+                   <div class="col-sm-9 latimediv"><input class="form-control" type="text" id="data_emitere_factura" readonly value="{{modificare.dataEmitereFacturaBefore}}"></div>
+                     <span class="glyphicon glyphicon-circle-arrow-right orice"></span>
+                      <div class="col-sm-9 latimediv"><input class="form-control" type="text" id="data_emitere_factura" readonly value="{{modificare.dataEmitereFacturaAfter}}"></div>
+               {% endif %}
+               </div>
+
+               <div class="form-group">
+                   {% if modificare.dataRapActBefore != modificare.dataRapActAfter %}
+               <label for="data_rap_act" class="col-sm-8 control-label" id="rap_act" style="clear:left;">Data Rap Act</label>
+                      <div class="col-sm-9 latimediv"><input class="form-control" type="text" id="data_rap_act" readonly value="{{modificare.dataRapActBefore}}"></div>
+                     <span class="glyphicon glyphicon-circle-arrow-right orice"></span>
+                      <div class="col-sm-9 latimediv"><input class="form-control" type="text" id="data_rap_act" readonly value="{{modificare.dataRapActAfter}}"></div>
+                   {% endif %}
+
+                   {% if modificare.dataRapInterBefore != modificare.dataRapInterAfter %}
+               <label for="data_rap_inter" class="col-sm-8 control-label" id="rap_inter" style="clear:left;">Data Rap Inter</label>
+                      <div class="col-sm-9 latimediv"><input class="form-control" type="text" id="data_rap_inter" readonly value="{{modificare.dataRapInterBefore}}"></div>
+                     <span class="glyphicon glyphicon-circle-arrow-right orice"></span>
+                       <div class="col-sm-9 latimediv"><input class="form-control" type="text" id="data_rap_inter" readonly value="{{modificare.dataRapInterAfter}}"></div>
+               {% endif %}
+               </div>
+
+              <div id="date_boolene">
+                {% if modificare.semnatBefore != modificare.semnatAfter %}
+
+                <div id="semnat">
+                    {% if modificare.semnatBefore == True %}
+                    <span class="glyphicon glyphicon-ok flatat" style="margin-left:33%" id="semnat_ok"></span>
+                    <label class="oki flatat" style="margin-left:1%;">Semnat</label>
+                    {% else %}
+                    <span class="glyphicon glyphicon-remove flatat" style="margin-left:33%" id="semnat_notok"></span>
+                    <label class="notoki flatat" style="margin-left:1%;">Semnat</label>
+                    {% endif %}
+
+                    <span class="glyphicon glyphicon-circle-arrow-right orice"></span>
+                     {% if modificare.semnatAfter == True %}
+                    <span class="glyphicon glyphicon-ok flatat" style="margin-left: 5%;" id="semnat_ok"></span>
+                    <label class="oki flatat" style="margin-left:1%;">Semnat</label>
+                    {% else %}
+                    <span class="glyphicon glyphicon-remove flatat" style="margin-left: 5%;" id="semnat_notok"></span>
+                    <label class="notoki flatat" style="margin-left:1%;">Semnat</label>
+                    {% endif %}
+               </div>
+                {% endif %}
+
+                {% if modificare.tipCopieBefore != modificare.tipCopieAfter %}
+                <div id="tip_copie" style="margin-bottom:2%">
+                    {% if modificare.tipCopieBefore == True %}
+                    <span class="glyphicon glyphicon-ok flatat" style="clear:left;margin-left:33%" id="tip_copie_ok"></span>
+                    <label class="oki flatat" style="margin-left:1%;">Tip Copie</label>
+                    {% else %}
+                    <span class="glyphicon glyphicon-remove flatat" style="clear:left;margin-left:33%" id="tip_copie_notok"></span>
+                    <label class="notoki flatat" style="margin-left:1%;">Tip Copie</label>
+                    {% endif %}
+
+                    <span class="glyphicon glyphicon-circle-arrow-right orice"></span>
+                    {% if modificare.tipCopieAfter == True %}
+                    <span class="glyphicon glyphicon-ok flatat" style="margin-left:5%;" id="tip_copie_ok"></span>
+                    <label class="oki flatat" style="margin-left:1%;">Tip Copie</label>
+                    {% else %}
+                    <span class="glyphicon glyphicon-remove flatat" style="margin-left:5%;" id="tip_copie_notok"></span>
+                    <label class="notoki flatat" style="margin-left:1%;">Tip Copie</label>
+                    {% endif %}
+               </div>
+                {% endif %}
+
+                    {% if modificare.modTrimitereBefore != modificare.modTrimitereAfter %}
+                  <div id="mod_trimitere" style="padding-left:0;">
+                    <span class="glyphicon glyphicon-file flatat" style="clear:left;margin-left:33%"></span>
+                    <label id="trimitere_text flatat" style="margin-left:1%;float:left;">
+                        {% if modificare.modTrimitereBefore == False %} Fizic {% else %} Fizic + Digital
+                        {% endif %}
+                    </label>
+
+                     <span class="glyphicon glyphicon-circle-arrow-right orice" style="color: #333;"></span>
+                    <span class="glyphicon glyphicon-file flatat" style="margin-left:5%"></span>
+                    <label id="trimitere_text flatat" style="margin-left:1%;float:left;">
+                        {% if modificare.modTrimitereAfter == False %} Fizic {% else %} Fizic + Digital
+                        {% endif %}
+                    </label>
+               </div>
+
+                        {% endif %}
+              </div>
+
+           </form>
+        </div>
+
+         <div class="modal-footer">
+             <button type="button" class="btn btn-default" data-dismiss="modal">Inchide</button>
+         </div>
+      </div>
+    </div>
+ </div>
+    {% endfor %}
+
+{% if listaModificari %}
+    <div class="tabel_mare">
+<table class="table table-hover table-striped" id="tabel_modificari">
+        <thead>
+			<th>Nume utilizator </th>
+            <th>Data modificarii</th>
+            <th>Tipul modificarii</th>
+            <th>Contract</th>
+        </thead>
+		<tbody>
+        {% for modificare in listaModificari %}
+            {% if modificare.tip == 'modif' %}
+            <tr class="vezi_contract view hm-red-strong" data-toggle="modal" data-target="#{{ modificare.id }}">
+            {% else %}
+            <tr>
+            {% endif %}
+            <td> {{modificare.idUser.username}} </td>
+            <td> {{modificare.dataModificare}}</td>
+            <td> {{modificare.tip}} </td>
+            <td> {{modificare.idContract_id}} </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+			<th>Nume utilizator </th>
+            <th>Data modificarii</th>
+            <th>Tipul modificarii</th>
+            <th>Contract</th>
+        </tfoot>
+
+    </table>
+    </div>
+	{% else %}
+		<p> Nu au fost efectuate modificari. </p>
+{% endif %}
+
+{% endblock %}

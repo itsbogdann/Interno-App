@@ -1,0 +1,43 @@
+{% extends 'AppInterno/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block content %}
+<form  method="GET">
+    <div class="form-group">
+        {% csrf_token %}
+        {{form.an}}
+        <button class="btn btn-success" type="submit" name="stat1">Numar contracte de plata pe luna (introduceti anul)</button>
+        <button class="btn btn-success" type="submit" name="stat2">Numar contracte incepute in luna (introduceti anul)</button>
+
+    </div>
+    <div class="form-group">
+        {% csrf_token %}
+        {% if lista_contracte_luna %}
+            <table class="table table-hover table-striped">
+                <thead>
+                <tr>
+                    <th>Luna</th>
+                    <th>Numar de contracte</th>
+                    <th></th>
+                </tr>
+                </thead>
+            <tbody>
+            {% for pereche in lista_contracte_luna %}
+            <tr class="view hm-red-strong">
+                <td> {{ pereche.0 }}</td>
+                <td> {{ pereche.1 }} </td>
+            <!--
+            <td>  </td>
+            <td>/div></td>
+            <td></td>-->
+                <td></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        {% else %}
+            <p>Nu sunt astfel de contracte in acest an sau nu ati introdus inca anul.</p>
+        {% endif %}
+        </table>
+    </div>
+</form>
+{% endblock %}
