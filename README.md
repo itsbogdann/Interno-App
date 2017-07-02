@@ -12,6 +12,6 @@ Managing:
 - deadlines
 - mail notifications
 - different classes of users & administrators with different notifications and permissions
-- etc
+- internal co-working features
 
 Used: Django & PostgreSQL
